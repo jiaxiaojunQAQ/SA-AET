@@ -8,7 +8,7 @@ Please feel free to contact jiaxiaojunqaq@gmail.com if you have any question.
 
 Vision-language pre-training (VLP) models excel at interpreting both images and text but remain vulnerable to multimodal adversarial examples (AEs). Advancing the generation of transferable AEs, which succeed across unseen models, is key to developing more robust and practical VLP models. Previous approaches augment image-text pairs to enhance diversity within the adversarial example generation process, aiming to improve transferability by expanding the contrast space of image-text features. However, these methods focus solely on diversity around the current AEs, yielding limited gains in transferability. To address this issue, we propose to increase the diversity of AEs by leveraging the intersection regions along the adversarial trajectory during optimization. Specifically, we propose sampling from adversarial evolution triangles composed of clean, historical, and current adversarial examples to enhance adversarial diversity. We provide a theoretical analysis to demonstrate the effectiveness of the proposed adversarial evolution triangle. Moreover, we find that redundant inactive dimensions can dominate similarity calculations, distorting feature matching and making AEs model-dependent with reduced transferability. Hence, we propose to generate AEs in the semantic image-text feature contrast space, which can project the original feature space into a semantic corpus subspace. The proposed semantic-aligned subspace can reduce the image feature redundancy, thereby improving adversarial transferability. Extensive experiments across different datasets and models demonstrate that the proposed method can effectively improve adversarial transferability and outperform state-of-the-art adversarial attack methods. 
 <p align="left">
-    <img src="./visualization/method.png" width=100%\>
+    <img src="./images/framework.png" width=100%\>
 </p>
 
 ## Quick Start 
@@ -64,7 +64,7 @@ wget --no-check-certificate 'https://drive.usercontent.google.com/download?id=1P
 
 ### 3. parameter settings
 
-Our method has two adjustable hyperparameters. In `RAttacker.py`, you can set the attribute `sample_numbers` in the `ImageAttacker` class, with a default value of 5. In the `TextAttacker` class, you can set the attribute `text_ratios`, with a default value of `[0.6, 0.2, 0.2]`.
+Our method has two adjustable hyperparameters. In `SA_AET.py`, you can set the attribute `sample_numbers` in the `ImageAttacker` class, with a default value of 5. In the `TextAttacker` class, you can set the attribute `text_ratios`, with a default value of `[0.6, 0.2, 0.2]`.
 
 ## Transferability Evaluation
 
@@ -84,7 +84,7 @@ We provide `eval.py`(You can choose to import **SGAttacker** or **RAttacker(Ours
 Here is an example for Flickr30K dataset.
 
 ```bash
-python eval.py --config ./configs/Retrieval_flickr.yaml \
+python eval_AET.py --config ./configs/Retrieval_flickr.yaml \
 	--cuda_id 0 \
 	--model_list ['ALBEF','TCL','CLIP_ViT','CLIP_CNN'] \
 	--source_model CLIP_CNN \
@@ -96,8 +96,31 @@ python eval.py --config ./configs/Retrieval_flickr.yaml \
 **Main Results**
 
 <p align="left">
-    <img src="./visualization/ITR_Results.png" width=100%\>
+    <img src="./images/results_FLICKR30K.png" width=100%\>
 </p>
+
+Here is an example for MSCOCO dataset.
+
+```bash
+python eval_AET.py --config ./configs/Retrieval_coco.yaml \
+	--cuda_id 0 \
+	--model_list ['ALBEF','TCL','CLIP_ViT','CLIP_CNN'] \
+	--source_model CLIP_CNN \
+	--albef_ckpt ./checkpoints/albef_coco.pth \
+	--tcl_ckpt ./checkpoints/tcl_coco.pth \
+	--original_rank_index_path ./std_eval_idx/coco/
+```
+
+**Main Results**
+
+<p align="left">
+    <img src="./images/results_MSCOCO.png" width=100%\>
+</p>
+
+
+
+
+
 
 ### 2. Cross-Task Attack Evaluation
 
@@ -118,12 +141,20 @@ After that, please refer to `train_caption.py` (use '--evaluate') in [BLIP](http
 **Main Results:**
 
 <p align="left">
-    <img src="./visualization/Cross_Task_Results.png" width=100%\>
+    <img src="./images/Cross_Task_Results.png" width=100%\>
 </p>
 
 ### 3. Transfer Attack on LLMs
 
 Please send the adversarial images to LLMs and prompt these systems with the query **"Describe this image"**.
+
+
+**Main Results:**
+
+<p align="center">
+    <img src="./images/Results_LLM.png" width=50%\>
+</p>
+
 
 ## Visualization
 
