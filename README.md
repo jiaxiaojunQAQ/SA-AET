@@ -1,6 +1,6 @@
 # SA-AET
-
-Semantic-Aligned Adversarial Evolution Triangle for High-Transferability Vision-Language Attack
+📢 **Update (July 2025):** Our paper has been **accepted to TPAMI 2025**! 🎉  
+Check out the paper: [Semantic-Aligned Adversarial Evolution Triangle for High-Transferability Vision-Language Attack](https://ieeexplore.ieee.org/document/11045302)
 
 Please feel free to contact jiaxiaojunqaq@gmail.com if you have any question.
 
